@@ -3,7 +3,6 @@ NORT
 
 Secondlife Gas Brake Vehicle and script components.
 
-//////////////////////////////////////////////////////////////////////
 // ZMO Standard Engine for Secondlife Vehicles (Open Source 1.7 beta)
 // Written by Angie Xenga | Ed Zaurak | August 2012
 //
@@ -28,18 +27,11 @@ Secondlife Gas Brake Vehicle and script components.
 // All Script writing including custom work requests will be ignored.
 // So if you mess it up...good luck.
 // Remember Always to keep an original and work off copies.
-//////////////////////////////////////////////////////////////////////
 
 
-//////Sculpts, Textures, Animations, Sounds///////////////////////////
-// Add your info
-//////////////////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////////////////
 // This script is a "Gas and Brakes" Operation vehicle.
 // That means when you press the "S" key or "Down Arrow" key the car will Brake.
 // You have to shift to go Reverse via "C" key or "PageDown" key
-//////////////////////////////////////////////////////////////////////
 
 
 ...More Details to Come
