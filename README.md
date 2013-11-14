@@ -1,10 +1,11 @@
 <h1>Secondlife Gas Brake Vehicle Script</h1>
 
-ZMO Standard Engine for Secondlife Vehicles (Open Source 1.7 beta)
+<h3>ZMO Standard Engine for Secondlife Vehicles (Open Source 1.7 beta)</h3>
 
-Written by Angie Xenga | Ed Zaurak | August 2012
+<h3>Written by Angie Xenga | Ed Zaurak | August 2012</h3>
 
 A derivative script work from D> Concept Car by Damen Hax with ZMO Autoworks Engine Script Snipbits & Additions.
+
 
 This is the result of 2 year LSL research (+ additional time from others).
 
