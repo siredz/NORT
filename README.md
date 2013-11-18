@@ -16,7 +16,7 @@ Remember Always to keep an original and work off copies.
 
 The script is written with Sound and Animation. 
 To eliminate error message please include Sound & Animation file name or UUID
-In the appropriate porstion of the script. (From Line to Line)
+In the appropriate porstion of the script. (Sound from Line 229 to Line 244 | Animation from Line to Line)
 
 The script works best with Pivot corrected Animation. 
 You must have a Secondlife account. Able to purchase from SL marketplace 
