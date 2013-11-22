@@ -1,5 +1,5 @@
 //////////////////////////////////////////////////////////////////////
-// ZMO Standard Engine (Open Source 2.0 beta) Mass/Gravity Drift
+// ZMO Standard Engine (Open Source 2.1 beta) Mass/Gravity Drift
 // Written by Angie Xenga | Ed Zaurak | August 2012
 //
 // Insert Fuel to Linear function of Drift
@@ -95,7 +95,7 @@ VLFT_Y =  1.00001;
 VLFT_Z =  100.0;
 //// VEHICLE_ANGULAR_FRICTION_TIMESCALE
 VAFT_X =  0.400;
-VAFT_Y =  0.010;
+VAFT_Y =  20.000;
 VAFT_Z =  15.00;
 
 VVAE =  0.100;  //// VEHICLE_VERTICAL_ATTRACTION_EFFICIENCY ///Suspension 
@@ -132,7 +132,7 @@ BrakePower = 20;
 Brake_Speed = 5;
 
 ////APPLIED DOWNFORCE
-DownForce =  15;
+DownForce =  22;
 
 Tire_Sim = FALSE;
 
@@ -190,7 +190,7 @@ float       Fuel;           //Fuel
 float       Power;          //Forward power
 
 //// Steering
-float       timing = 0.04;      //script runtime speed
+float       timing = 0.02;      //script runtime speed
 float       dynamic_steering;   //Dynamic_Steering
 integer     turn_direction;     //Turn direction
 float       turning = 1.0;      //turn speed 1.0 is Default.
@@ -365,8 +365,8 @@ Set_Parameters(){
 //        | VEHICLE_FLAG_HOVER_TERRAIN_ONLY
 //        | VEHICLE_FLAG_HOVER_GLOBAL_HEIGHT
 //         VEHICLE_FLAG_LIMIT_ROLL_ONLY
-        VEHICLE_FLAG_NO_DEFLECTION_UP
-        | VEHICLE_FLAG_HOVER_UP_ONLY
+//        VEHICLE_FLAG_NO_DEFLECTION_UP
+          VEHICLE_FLAG_HOVER_UP_ONLY
         );
         
         llRemoveVehicleFlags(
@@ -486,13 +486,13 @@ Burnout(){
     llSetVehicleVectorParam(VEHICLE_LINEAR_MOTOR_DIRECTION, <Linear.x,LSD_EQ,Linear.z>);
     llSetVehicleVectorParam(VEHICLE_LINEAR_MOTOR_OFFSET, <100,VLMO_Y*llFabs(Angular.z), VLMO_Z*VLMO_Z_M>); ////Center of Gravity
     llSetVehicleFloatParam(VEHICLE_LINEAR_MOTOR_TIMESCALE, VLMT+VMT_EQ);
-    llSetVehicleFloatParam(VEHICLE_ANGULAR_MOTOR_TIMESCALE,VAMT+(VMT_EQ*0.01));
+//    llSetVehicleFloatParam(VEHICLE_ANGULAR_MOTOR_TIMESCALE,VAMT+(VMT_EQ*0.01));
     llSetVehicleVectorParam(VEHICLE_LINEAR_FRICTION_TIMESCALE, <Slip_EQ_X, Slip_EQ_Y, 1000>); //VLFT_X*( 0.1 * (1+llFabs(Gear)) )
 }
     
 SlipMin(){
     llMessageLinked(LINK_ALL_CHILDREN, 0, "Smoke", NULL_KEY);
-    llSetVehicleVectorParam(VEHICLE_ANGULAR_FRICTION_TIMESCALE, <0,0,200>);
+    llSetVehicleVectorParam(VEHICLE_ANGULAR_FRICTION_TIMESCALE, <0,VAFT_Y,200>);
     llSetVehicleVectorParam(VEHICLE_LINEAR_FRICTION_TIMESCALE, <VLFT_X*0.3,11000,VLFT_Z>);
     llSetVehicleVectorParam(VEHICLE_LINEAR_MOTOR_DIRECTION, <Linear.x*0.8,-Angular.z*0.0001*(llFabs(SpeedVec.y)/llFabs(SpeedVec.x)),Linear.z>);
 }
@@ -500,7 +500,7 @@ SlipMin(){
 SlipDriftOFF(){
     Gas_On = FALSE;
     llSetVehicleFloatParam(VEHICLE_LINEAR_MOTOR_TIMESCALE, VLMT+Fuel);
-    llSetVehicleFloatParam(VEHICLE_ANGULAR_MOTOR_TIMESCALE,VAMT);
+//    llSetVehicleFloatParam(VEHICLE_ANGULAR_MOTOR_TIMESCALE,VAMT);
     llSetVehicleVectorParam(VEHICLE_LINEAR_MOTOR_OFFSET, ZERO_VECTOR);
     
     if (llFabs(SpeedVec.y) > Slip_Max && BURN != 0)
@@ -540,8 +540,16 @@ default
                 llSetVehicleVectorParam(VEHICLE_LINEAR_MOTOR_OFFSET, ZERO_VECTOR);
 //                Angular.y = 0;
             }
-            
-            if (llFabs(SpeedVec.x) < 1.5 && Gas_On == FALSE){llSleep(0.2);} //To ensure full stop
+
+            //To ensure full stop
+            if (llFabs(SpeedVec.x) < 2.0 && Gas_On == FALSE && BURN == 0){
+                llSleep(0.1);
+//                llSetVehicleVectorParam(VEHICLE_LINEAR_MOTOR_OFFSET, ZERO_VECTOR);
+                llSetVehicleVectorParam(VEHICLE_LINEAR_MOTOR_DIRECTION, ZERO_VECTOR);
+                llSetVehicleVectorParam(VEHICLE_ANGULAR_MOTOR_DIRECTION, ZERO_VECTOR);
+                llSetStatus(STATUS_PHYSICS, FALSE);
+                llRemoveVehicleFlags(VEHICLE_FLAG_LIMIT_ROLL_ONLY);    
+            }
 
 //// Gas Padel          
         if (Gas_On == TRUE) {
@@ -566,11 +574,11 @@ default
         if  (curPos_time <= 0){
             curPos_A = llGetLocalPos();
             curPos_time = 3;
-            Linear = ZERO_VECTOR;
+//            Linear = ZERO_VECTOR;
 //            Angular = ZERO_VECTOR;
         }
 
-        if  (curPos_B.z > (curPos_A.z+1.5)+(llFabs(SpeedVec.x)*0.015) && FlightSafety == TRUE){
+        if  (Flatland = TRUE && curPos_B.z > (curPos_A.z+4.5)+(llFabs(SpeedVec.x)*0.015) && FlightSafety == TRUE){
             if ( llFabs(SpeedVec.x) > 10){
                 FlightWarning = TRUE;
                 VLMO_Z_M = 100;
@@ -587,10 +595,10 @@ default
         }
     
         //Applied Downforce
-        //Impulse type DF  // if ( llFabs(SpeedVec.x) > 1 ){llApplyImpulse(llGetMass()*<0,0,-DownForce*0.01>,TRUE);}
+        //Impulse type DF  // if ( llFabs(SpeedVec.x) > 1 ){llApplyImpulse(llGetMass()*<0,0,-DownForce*0.001>,TRUE);}
         
         //Velocity Downforce
-        if(llFabs(SpeedVec.x) > 1)
+        if(llFabs(SpeedVec.x) > 1 && Gear != 1)//Neutural will turn off
         {
             Linear.z = -DownForce+( -0.001*llFabs(SpeedVec.x) );
         }
@@ -754,6 +762,9 @@ default
         {
             Moving = 1;
             llSetStatus(STATUS_PHYSICS, TRUE);
+            //Flat Land vs Hills
+            if (Flatland == FALSE){llSetVehicleFlags(VEHICLE_FLAG_LIMIT_ROLL_ONLY);}
+            if (Flatland == TRUE) {llRemoveVehicleFlags(VEHICLE_FLAG_LIMIT_ROLL_ONLY);}    
         }
         
 ///Gear Shift
@@ -822,7 +833,7 @@ default
         {
             Gas_On = FALSE;
             CurLight = LITE_GASOFF;
-            VLMO_X = VLMO_X_init+0.0005*llFabs(SpeedVec.x);
+            VLMO_X = VLMO_X_init+0.005*llFabs(SpeedVec.x);
             VLMO_Y = 0;
             CurSound = IdleSound;
         }
@@ -833,7 +844,8 @@ default
             Gas_On = FALSE;
             Brake_On = TRUE;
             CurLight = LITE_BRAKE_L;
-            VLMO_X = 0;
+            VLMO_X = VLMO_X_init+0.01*llFabs(SpeedVec.x);
+            //VLMO_X = 0;
             VLMO_Y = 0;
             Linear.x = 0;
             
@@ -958,10 +970,8 @@ default
         }
 
 ////Mouse Action
-        if (Down & CONTROL_LBUTTON){Gear = 1; Current_Gear = "N";}
+        if (Down & CONTROL_LBUTTON){Gear = 1; Power = 0; Current_Gear = "N";}
 //        if (Released & CONTROL_LBUTTON){}
-          
-//        if (llFabs(Angular.x) > 2.3) {Under_St = TRUE; UNDERSTEER();} 
         
     }//End Control
 }//End default
