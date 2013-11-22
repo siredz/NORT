@@ -2,6 +2,9 @@
 // ZMO Standard Engine (Open Source 2.0 beta) Mass/Gravity Drift
 // Written by Angie Xenga | Ed Zaurak | August 2012
 //
+// Added Reverse Camera. Fix additional Physics.
+// Nov. 22, 2013
+// 
 // Insert Fuel to Linear function of Drift
 // Fix Continue drift after slip drift off.
 // Add mouse click Neutural gear. Nov 17, 2013
