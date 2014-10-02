@@ -30,6 +30,3 @@ and able to login to Secondlife to recieve this.
 
 Free static animation example.
 https://marketplace.secondlife.com/p/Pivot-Correct-Driver-Sit-Sample/3399214
-
-Advance version. 75$L (roughly $0.50).
-https://marketplace.secondlife.com/p/Autoworks-VOS-Animations-GT-Left/5506515
