@@ -23,10 +23,3 @@ In the appropriate porstion of the script.
 Sound around Line 229 to Line 244.
 
 Animation around Line 265 to Line 269.
-
-The script works best with Pivot corrected Animation. 
-You must have a Secondlife account. Able to purchase from SL marketplace 
-and able to login to Secondlife to recieve this.
-
-Free static animation example.
-https://marketplace.secondlife.com/p/Pivot-Correct-Driver-Sit-Sample/3399214
